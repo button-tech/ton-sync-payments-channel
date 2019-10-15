@@ -1,0 +1,14 @@
+#!/usr/bin/expect -f
+
+set timeout -1
+
+set filename [lindex $argv 0];
+
+spawn ./liteclient-build/lite-client/lite-client -C ./liteclient-build/ton-lite-client-test1.config.json
+sleep 1
+expect ""
+send -- "sendfile $filename\r"
+sleep 1
+expect ">"
+send \x03
+expect eof

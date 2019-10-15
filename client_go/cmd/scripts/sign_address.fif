@@ -1,0 +1,13 @@
+"TonUtil.fif" include
+
+"./data/wallet.pk" load-generate-keypair
+constant wallet_pk
+constant wallet_pub
+
+"./data/wallet.addr" load-address wallet_pk ed25519_sign_uint swap drop
+<b 
+   swap B, 
+b> constant signature
+
+
+signature <s csr.

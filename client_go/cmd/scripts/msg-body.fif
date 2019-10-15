@@ -1,0 +1,14 @@
+#!/usr/bin/env fift -s
+"TonUtil.fif" include
+
+"./data/wallet.pk" load-keypair nip constant wallet_pk
+
+<b 1 8 u, b> constant signing_message
+
+signing_message hash wallet_pk ed25519_sign_uint constant message_signature
+
+<b message_signature B, signing_message <s s, b>
+
+cr ."Message body is " dup <s csr. cr
+
+2 boc+>B "msg-body.boc" tuck B>file ."Saved to file " type cr
