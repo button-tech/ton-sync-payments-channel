@@ -1,10 +1,14 @@
 # Synchronous two-party payment channel
 
-We assume that on each machine you have already set up your private key in key/ folder.
+## Specially for people who will test (TON Team)
 
-We use these private keys to sign messages offchain and onchain
+We already setted up private keys, and deplyed contract address for you, however, you can use your own keys and deploy contract again - but it will take more steps.
 
-You can use any private key, but, first, you need a wallet that has grams in order to deploy contract using it
+We will not attach pk and other hardcoded data to our github:
+https://github.com/button-tech/ton-sync-payments-channel
+
+Thank you for a contest, it was great challenge for us,
+BW Team
 
 ## Running 
 
