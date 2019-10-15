@@ -24,12 +24,12 @@ For server you need to run with port like:
 
 1) First terminal window:
 ```
-docker run -it -p port:port -v path_to_catalog_with_files:/app/data buttonwallet/synchannel
+docker run -it -p port:port -v path_to_catalog_with_files:/app/data prazd/synchannel
 ```
 
 2) Second terminal window:
 ```
-docker run -it -v path_to_another_catalog_with_files:/app/data buttonwallet/synchannel
+docker run -it -v path_to_another_catalog_with_files:/app/data prazd/synchannel
 ```
 3) Enter smart contract address:
 
