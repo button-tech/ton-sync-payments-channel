@@ -1,36 +1,17 @@
-Folder ```cmd``` contains ```config.yaml``` which you need to change for yourself.
+# Dev build
+
+Dependencies - `gox`
 
 ```
-Run:
-> sh compile.sh
-> cd bob|alice
-> ./main config_alice.yaml|config_bob.yaml
-
+go get github.com/mitchellh/gox
+./dev_build.sh
+docker run -ti -p port:port -v catalog_with_files:/app/data test
 ```
 
-```
-Commands:
-serve			create connection token
-connect			connect to other pee
-deposit			make deposit
-send			send some amount
-sign			sign last state
-balance			show balance
-createEmpty 		create empty state
-requestEmpty		request empty state from your partner
-showAll			show all states
-showLast		show last state
-exitFromDeal		request to exit from deal
-approveExit		approve to exit from deal
-exit			exit from app
-```
-
-Run in docker:
-
-1. Create ton wallet
-2. Rename your .addr and .pk as `wallet.addr`,`wallet.pk`
+# Prod build
 
 ```
-# docker build -t image .
-# docker run -ti -p port:port -v catalog_with_keys:/app/data image
+docker build -t username/image .
+docker run -ti -p port:port -v catalog_with_files:/app/data username/image
+
 ```

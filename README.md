@@ -1,16 +1,16 @@
 # Synchronous two-party payment channel
 
-We assume that on each machine you have already setted up your private key in key/ folder.
+We assume that on each machine you have already set up your private key in key/ folder.
 
-We use this private keys to sign messages offchain and onchain
+We use these private keys to sign messages offchain and onchain
 
-You can use any private key, but you firstly need a wallet that have grams if you want to deploy contract using it
+You can use any private key, but, first, you need a wallet that has grams in order to deploy contract using it
 
 ## Running 
 
-What do you need to run it:
+What do you need for running it:
 
-You need to create catalog with `wallet.addr `and `wallet.pk` files (account with Grams).
+You need to create a catalog with `wallet.addr `and `wallet.pk` files (account with Grams).
 
 1. Deploy Smart contract on TON
 
@@ -20,7 +20,7 @@ You need to create catalog with `wallet.addr `and `wallet.pk` files (account wit
 
 You need docker.io to run CLI, we assume that it is installed on machine
 
-For server you need to run with port like:
+For the server you need to run with a port like:
 
 1) First terminal window:
 ```
@@ -39,14 +39,14 @@ docker run -it -v path_to_another_catalog_with_files:/app/data prazd/synchannel
 
 4) Setup peer to peer connection
 
-Person who deployed Smart Contract needs to serve connection with command
+A person who deployed Smart Contract has to serve connection with command
 
 Terminal 1:
 ```
     serve
 ```
 
-Than you need to chose a port where your connection will be served:
+Then you need to choose a port where your connection will be served:
 
 ```
 Please, enter a source port or enter "exit": 3000
@@ -71,7 +71,7 @@ WAN for public
 /ip4/172.17.0.3/tcp/3000/p2p/QmeZ1Ykwj57BGqeSjU66pvh5iDfSYjW2EugqaFkZ5UENYw
 ```
 
-Partner needs to run 
+The partner has to run 
 
 ```
     connect
@@ -83,9 +83,9 @@ And enter connection string there
 /ip4/172.17.0.3/tcp/3000/p2p/QmeZ1Ykwj57BGqeSjU66pvh5iDfSYjW2EugqaFkZ5UENYw
 ```
 
-If connection is successfull, you will automatically send partner your address and your signature that prove that it is your address
+If connection is successful, the address and signature will be automatically exchanged with your partner. That will prove that it is yours addresses
 
-You will got something like this:
+You will get something like this:
 
 ```
 Partner signature: 78FB74C5FDD013648BF060663AF55DE25566D310021D5F448403168890F85C80D6339A1EC63C6917823B9CAA3F6EB95819334C0F7AB70FD34F54A733FCF2010A
@@ -109,20 +109,20 @@ Enter amount to put on contract or "exit"
 Next, you need to enter GRAMs amount that you will send to the contract
 
 
-Your partner need to repeat the same operation
+Your partner has to repeat the same operation
 
 After notification
 ```
 ❗ Received initial state❗
 ```
 
-The last of 2 people who made the deposit needs to sign initial state with command 
+One of the last of 2 people who made the deposit needs to sign the initial state with command 
 
 ```
  sign
 ```
 
-And after that you can run command **showAll** will see something like this
+And after that, you can run command **showAll** and see something like this
 
 ```
 Sender A
@@ -160,13 +160,13 @@ Terminal 2:
 send 1 or send .1 or send 0.1
 ```
 
-You will get inforamation at Terminal 1:
+You will get information at Terminal 1:
 ```
 ❗ Received new state❗
 ```
 
 
-and than you need to approve and sign new state that Terminal 2 sent to you:
+and then you need to approve and sign the new state that Terminal 2 sent to you:
 ```
 showLast
 sign
@@ -192,13 +192,13 @@ So, at Terminal 1 you will see a confirmation, now it is Terminal 2 turn to send
 ❗ Last state signed successful❗
 ```
 
-If you want sent tx to your partner but now is not your turn you can use command `requestEmpty`
+If you want to make transaction to your partner but now is not your turn you can use command `requestEmpty`
 
-Than your partner will see notification:
+Then your partner will see a notification:
 ```
 ❗ Your partner request empty state❗
 ```
-If you agree with that you can create empty state by command `createEmpty`
+If you agree with that you can create an empty state by command `createEmpty`
 
 and your partner should sign it
 
@@ -209,7 +209,7 @@ Terminal 1:
 withdrawal  
 ```
 
-Than you need to enter step number that you wanna send to the contract:
+Then you need to enter step number that you want to send to the contract:
 ```
 Enter step number: 2
 Signature A: 73A6FADA9F3FA985BB000404AD1FAC434FE12AE310EC2390522AA9B42843C3301FA52026BF7BFEA460E2FC7413D6CD67DDB76BB455DCD634A1C9437843B9AA0A
@@ -223,12 +223,12 @@ Contract seqno: 3
 Are you sure[y/n]:y
 ```
 
-Than if transaction completed, your partner will see notification:
+Next, if transaction completed, your partner will see a notification:
 ```
 ❗ Your partner sent the state to the smart contract❗
 ```
 
-And than he can do withdrawal it too
+And partner further can do a withdrawal too
 
 After that two person will see all information about result balances:
 
@@ -240,9 +240,9 @@ Smart contract balance in workchain now: 0.932511
 ```
 
 
-With CLI you can withdraw peacfully, however, it could be another option:
+With CLI you can withdraw peacefully, however, it could be another option:
 
-If there is a confilct on smart contract, you can withdraw it by applying the latest state
+If there is a conflict in smart contract, you can withdraw it by applying the latest state
 
 You can see all the states by:
 
@@ -252,7 +252,7 @@ showAll
 
 ## Details of implementation
 
-TON WP was used is theortical base.
+TON WP was used as a theoretical base.
 
 We have:
 
@@ -262,18 +262,18 @@ User 2 (B)
 Smart contract (SC)
 
 
-### 1 Beofore deposit (Onchain + Offchain):
+### 1 Before deposit (Onchain + Offchain):
 
-We assume that A and B will have a secure p2p connection between each other. We use our own implmentation on Goland.
+We assume that A and B will have a secure p2p connection between each other. We use our own implementation on Golang.
 
-A and B needs to exchange the public keys, ton wallet addresses and signatures that prooves, that it is a correct address.
+A and B have to exchange the public keys, ton wallet addresses and signatures that prove the accuracy of the address.
 
-Also someone needs to deploy and pay for gas on SC, so we assume that A and B already reached agreement about that.
+Also, someone needs to deploy and pay for gas on SC, so we assume that A and B already have reached an agreement about that.
 
 
 ### 2 Deposit (Onchain):
 
-A and B send a query from TON Wallet to SC. They need to send GRAMS and initial details of state.
+A and B send a query from TON Wallet to SC. They need to send GRAMS and initial details of the state.
 
 **Initial details of state:**
 
@@ -284,14 +284,14 @@ A and B send a query from TON Wallet to SC. They need to send GRAMS and initial 
 | Amount A          | Needs to check that total sum A + B during exit will be correct |
 | Amount B          | Needs to check that total sum A + B during exit will be correct |
 
-*Amount A and B are calculated based on amount that A and B will send to SC*
+*Amount A and B are calculated based on the amount that A and B will send to SC*
 
 
 ### 3 Sending GRAMs to each other (Offchain):
 
-It is Sync Channel, so onlu one of A and B can send GRAMs to each other.
+It is Sync Channel, so only one of A and B can send GRAMs to each other.
 
-But we implemented a possibility to request your turn. If you will request it, B needs just to sign to old state with new state_num +=1
+But we implemented a possibility to request your turn. If you request it, B will have to just sign to the old state with a new state_num +=1
 
 We use our client to send GRAMs as well
 
@@ -300,7 +300,7 @@ We use our client to send GRAMs as well
 Case with the same states:
 
 
-Each of A and B needs to send:
+Each of A and B has to send:
 
 | Variables         |                    Description                   |
 |-------------------|--------------------------------------------------|
@@ -311,13 +311,13 @@ Each of A and B needs to send:
 | slice_ref with signature A         |   Check that A agreed with current state|
 | slice_ref with signature B         |   Check that A agreed with current state|
 
-Case with confilct:
+Case with conflict:
 
-If A applied to withdraw and then B applied with confilct.
+If A applied to withdraw and then B applied with conflict.
 
-A have option to send another state that have state_num > than current
+A has an option to send another state that has state_num > than current
 
-If it will be provided, withdraw will be executed with this state
+If it is provided, withdraw will be executed with this state
 
 ## Authors
 Nick Kozlov - CTO and Co-founder of BUTTON Wallet (@enormousrage, nk@buttonwallet.com)
@@ -330,6 +330,8 @@ Max Spiridonov - Lead Backend developer at BUTTON Wallet (@maxSpt, ms@buttonwall
 
 Ivan Frolov - Backend developer at BUTTON Wallet (@ivnkhh, if@buttonwallet.com)
 
-Roman Semenov - One of founders of Copperbits community, co-author of Tornado.cash Ethereum mixer (@poma, semenov.roma@gmail.com)
+Roman Semenov - One of the founders of Copperbits community, co-author of Tornado.cash Ethereum mixer (@poma, semenov.roma@gmail.com)
 
 Igor Gulamov Blockchain Researcher and Entrepreneur (@igor_gulamov, igor.gulamov@gmail.com)
+
+
