@@ -1,0 +1,4 @@
+"TonUtil.fif" include
+
+"./data/wallet.addr" load-address
+6 .Addr cr

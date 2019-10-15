@@ -1,0 +1,7 @@
+fiftCompiler: "./liteclient-build/crypto/fift"
+fifLib: "./lite-client/crypto/fift/lib/"
+accountAddress: "./get_address.fif"
+signState: "./sign_state.fif"
+send: "./send.fif"
+accountSignature: "./sign_address.fif"
+withdraw: "./withdraw.fif"
