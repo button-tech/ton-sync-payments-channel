@@ -320,16 +320,16 @@ A have option to send another state that have state_num > than current
 If it will be provided, withdraw will be executed with this state
 
 ## Authors
-
 Nick Kozlov - CTO and Co-founder of BUTTON Wallet (@enormousrage, nk@buttonwallet.com)
 
 Kirill Kuznecov - Co-founder of BUTTON Wallet (@krboktv, kk@buttonwallet.com)
 
 Alexey Prazdnikov - Fullstack developer at BUTTON Wallet (@noprazd, ap@buttonwallet.com)
 
-Max Spiridonov - Backend developer at BUTTON Wallet (@maxSpt, ms@buttonwallet.com)
+Max Spiridonov - Lead Backend developer at BUTTON Wallet (@maxSpt, ms@buttonwallet.com)
 
-Roman Semenov -  One of founders of Copperbits community, co-author of Tornado.cash Ethereum mixer (@poma, semenov.roma@gmail.com)
+Ivan Frolov - Backend developer at BUTTON Wallet (@ivnkhh, if@buttonwallet.com)
+
+Roman Semenov - One of founders of Copperbits community, co-author of Tornado.cash Ethereum mixer (@poma, semenov.roma@gmail.com)
 
 Igor Gulamov Blockchain Researcher and Entrepreneur (@igor_gulamov, igor.gulamov@gmail.com)
-
