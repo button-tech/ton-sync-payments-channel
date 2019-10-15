@@ -64,7 +64,7 @@ func getSmartContractAddress() string {
 func New() {
 
 	fmt.Println(" --------------------------------------------")
-	fmt.Println("|Welcome to the sync channel for HACK from BW|")
+	fmt.Println("|Welcome to the sync channel from BUTTON Team|")
 	fmt.Println(" --------------------------------------------")
 
 	paychannel.SmartContractAddress = getSmartContractAddress()
