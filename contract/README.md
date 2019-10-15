@@ -66,6 +66,7 @@ fift
 ```
 
 ## Deploy pool contract
+Create `bin` folder in `contract` directory
 Go to `pool` folder
 
 Place  (`alice/alice.pk`, `alice/alice.addr`) and (`bob/bob.pk`, `bob/bob.addr`) with non-zero balances
@@ -100,11 +101,13 @@ Else you need to:
 
 2.Create `bin` folder  
 
-3.Run `fift -s msg-body.fif [alice|bob] bin/msg-body`  
+3.Run `func pool.fc`
 
-4.Run `fift -s send.fif [alice|bob] [pool address] [alice seqno] [deposit amount] bin/msg-body bin/wallet-query`  
+4.Run `fift -s msg-body.fif [alice|bob] bin/msg-body`  
 
-5.Send `bin/wallet-query.boc` to the network  
+5.Run `fift -s send.fif [alice|bob] [pool address] [alice seqno] [deposit amount] bin/msg-body bin/wallet-query`  
+
+6.Send `bin/wallet-query.boc` to the network  
 
 ## Get money back
 

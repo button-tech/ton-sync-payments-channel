@@ -19,3 +19,8 @@ bin
 result.fif
 main
 pool-query.boc
+pool.addr
+bob.pk
+bob.addr
+alice.pk
+alice.addr
