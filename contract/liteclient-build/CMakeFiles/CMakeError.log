@@ -1,0 +1,220 @@
+Performing C++ SOURCE FILE Test HAVE_ARM64_CRC32C failed with the following output:
+Change Dir: /Users/erage/go/src/github.com/prazd/ton_build_sctipts/liteclient-build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_49218/fast && /Library/Developer/CommandLineTools/usr/bin/make -f CMakeFiles/cmTC_49218.dir/build.make CMakeFiles/cmTC_49218.dir/build
+Building CXX object CMakeFiles/cmTC_49218.dir/src.cxx.o
+/Library/Developer/CommandLineTools/usr/bin/c++    -Wall -Wextra -Werror -fno-exceptions -fno-rtti -DHAVE_ARM64_CRC32C  -march=armv8-a+crc+crypto -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -fPIE   -o CMakeFiles/cmTC_49218.dir/src.cxx.o -c /Users/erage/go/src/github.com/prazd/ton_build_sctipts/liteclient-build/CMakeFiles/CMakeTmp/src.cxx
+error: unknown target CPU 'armv8-a+crc+crypto'
+make[1]: *** [CMakeFiles/cmTC_49218.dir/src.cxx.o] Error 1
+make: *** [cmTC_49218/fast] Error 2
+
+
+Source file was:
+
+#include <arm_acle.h>
+#include <arm_neon.h>
+
+int main() {
+  __crc32cb(0, 0); __crc32ch(0, 0); __crc32cw(0, 0); __crc32cd(0, 0);
+  vmull_p64(0, 0);
+  return 0;
+}
+
+Performing C++ SOURCE FILE Test HAVE_STRONG_GETAUXVAL failed with the following output:
+Change Dir: /Users/erage/go/src/github.com/prazd/ton_build_sctipts/liteclient-build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_362e6/fast && /Library/Developer/CommandLineTools/usr/bin/make -f CMakeFiles/cmTC_362e6.dir/build.make CMakeFiles/cmTC_362e6.dir/build
+Building CXX object CMakeFiles/cmTC_362e6.dir/src.cxx.o
+/Library/Developer/CommandLineTools/usr/bin/c++    -Wall -Wextra -Werror -fno-exceptions -fno-rtti -DHAVE_STRONG_GETAUXVAL -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -fPIE   -o CMakeFiles/cmTC_362e6.dir/src.cxx.o -c /Users/erage/go/src/github.com/prazd/ton_build_sctipts/liteclient-build/CMakeFiles/CMakeTmp/src.cxx
+In file included from /Users/erage/go/src/github.com/prazd/ton_build_sctipts/liteclient-build/CMakeFiles/CMakeTmp/src.cxx:2:
+/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/include/arm_acle.h:28:2: error: "ACLE intrinsics support not enabled."
+#error "ACLE intrinsics support not enabled."
+ ^
+/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/include/arm_acle.h:49:3: error: use of undeclared identifier '__builtin_arm_wfi'; did you mean '__builtin_dwarf_cfa'?
+  __builtin_arm_wfi();
+  ^
+/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/include/arm_acle.h:49:3: note: '__builtin_dwarf_cfa' declared here
+/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/include/arm_acle.h:53:3: error: use of undeclared identifier '__builtin_arm_wfe'; did you mean '__builtin_dwarf_cfa'?
+  __builtin_arm_wfe();
+  ^
+/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/include/arm_acle.h:49:3: note: '__builtin_dwarf_cfa' declared here
+  __builtin_arm_wfi();
+  ^
+/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/include/arm_acle.h:57:3: error: use of undeclared identifier '__builtin_arm_sev'
+  __builtin_arm_sev();
+  ^
+/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/include/arm_acle.h:61:3: error: use of undeclared identifier '__builtin_arm_sevl'
+  __builtin_arm_sevl();
+  ^
+/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/include/arm_acle.h:65:3: error: use of undeclared identifier '__builtin_arm_yield'; did you mean '__builtin_ia32_xend'?
+  __builtin_arm_yield();
+  ^
+/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/include/arm_acle.h:57:3: note: '__builtin_ia32_xend' declared here
+  __builtin_arm_sev();
+  ^
+/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/include/arm_acle.h:78:9: error: use of undeclared identifier '__builtin_arm_ldrex'
+    v = __builtin_arm_ldrex(__p);
+        ^
+/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/include/arm_acle.h:79:10: error: use of undeclared identifier '__builtin_arm_strex'
+  while (__builtin_arm_strex(__x, __p));
+         ^
+/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/include/arm_acle.h:108:3: error: use of undeclared identifier '__builtin_arm_nop'; did you mean '__builtin_trap'?
+  __builtin_arm_nop();
+  ^
+/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/include/arm_acle.h:108:3: note: '__builtin_trap' declared here
+/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/include/arm_acle.h:205:10: error: use of undeclared identifier '__builtin_arm_rbit'
+  return __builtin_arm_rbit(__t);
+         ^
+/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/include/arm_acle.h:214:10: error: use of undeclared identifier '__builtin_arm_rbit64'
+  return __builtin_arm_rbit64(__t);
+         ^
+In file included from /Users/erage/go/src/github.com/prazd/ton_build_sctipts/liteclient-build/CMakeFiles/CMakeTmp/src.cxx:3:
+/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/include/arm_neon.h:28:2: error: "NEON support not enabled"
+#error "NEON support not enabled"
+ ^
+/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/include/arm_neon.h:48:24: error: 'neon_vector_type' attribute is not supported for this target
+typedef __attribute__((neon_vector_type(8))) int8_t int8x8_t;
+                       ^
+/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/include/arm_neon.h:49:24: error: 'neon_vector_type' attribute is not supported for this target
+typedef __attribute__((neon_vector_type(16))) int8_t int8x16_t;
+                       ^
+/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/include/arm_neon.h:50:24: error: 'neon_vector_type' attribute is not supported for this target
+typedef __attribute__((neon_vector_type(4))) int16_t int16x4_t;
+                       ^
+/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/include/arm_neon.h:51:24: error: 'neon_vector_type' attribute is not supported for this target
+typedef __attribute__((neon_vector_type(8))) int16_t int16x8_t;
+                       ^
+/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/include/arm_neon.h:52:24: error: 'neon_vector_type' attribute is not supported for this target
+typedef __attribute__((neon_vector_type(2))) int32_t int32x2_t;
+                       ^
+/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/include/arm_neon.h:53:24: error: 'neon_vector_type' attribute is not supported for this target
+typedef __attribute__((neon_vector_type(4))) int32_t int32x4_t;
+                       ^
+/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/include/arm_neon.h:54:24: error: 'neon_vector_type' attribute is not supported for this target
+typedef __attribute__((neon_vector_type(1))) int64_t int64x1_t;
+                       ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.
+make[1]: *** [CMakeFiles/cmTC_362e6.dir/src.cxx.o] Error 1
+make: *** [cmTC_362e6/fast] Error 2
+
+
+Source file was:
+
+#include <arm_acle.h>
+#include <arm_neon.h>
+#include <sys/auxv.h>
+
+int main() {
+  getauxval(AT_HWCAP);
+  return 0;
+}
+
+Performing C++ SOURCE FILE Test HAVE_WEAK_GETAUXVAL failed with the following output:
+Change Dir: /Users/erage/go/src/github.com/prazd/ton_build_sctipts/liteclient-build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_18793/fast && /Library/Developer/CommandLineTools/usr/bin/make -f CMakeFiles/cmTC_18793.dir/build.make CMakeFiles/cmTC_18793.dir/build
+Building CXX object CMakeFiles/cmTC_18793.dir/src.cxx.o
+/Library/Developer/CommandLineTools/usr/bin/c++    -Wall -Wextra -Werror -fno-exceptions -fno-rtti -DHAVE_WEAK_GETAUXVAL -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -fPIE   -o CMakeFiles/cmTC_18793.dir/src.cxx.o -c /Users/erage/go/src/github.com/prazd/ton_build_sctipts/liteclient-build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_18793
+/usr/local/Cellar/cmake/3.15.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_18793.dir/link.txt --verbose=1
+/Library/Developer/CommandLineTools/usr/bin/c++   -Wall -Wextra -Werror -fno-exceptions -fno-rtti -DHAVE_WEAK_GETAUXVAL -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_18793.dir/src.cxx.o  -o cmTC_18793 
+Undefined symbols for architecture x86_64:
+  "getauxval(unsigned long)", referenced from:
+      _main in src.cxx.o
+ld: symbol(s) not found for architecture x86_64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make[1]: *** [cmTC_18793] Error 1
+make: *** [cmTC_18793/fast] Error 2
+
+
+Source file was:
+
+unsigned long getauxval(unsigned long type) __attribute__((weak));
+#define AT_HWCAP 16
+
+int main() {
+  getauxval(AT_HWCAP);
+  return 0;
+}
+
+Performing C++ SOURCE FILE Test HAVE_CXX_FLAG_WIMPLICIT_FALLTHROUGH_2 failed with the following output:
+Change Dir: /Users/erage/go/src/github.com/prazd/ton_build_sctipts/liteclient-build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_8fe53/fast && /Library/Developer/CommandLineTools/usr/bin/make -f CMakeFiles/cmTC_8fe53.dir/build.make CMakeFiles/cmTC_8fe53.dir/build
+Building CXX object CMakeFiles/cmTC_8fe53.dir/src.cxx.o
+/Library/Developer/CommandLineTools/usr/bin/c++    -march=native -std=c++14 -fno-omit-frame-pointer -Wall -Wextra -DHAVE_CXX_FLAG_WIMPLICIT_FALLTHROUGH_2 -Wimplicit-fallthrough=2 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -fPIE   -Wimplicit-fallthrough=2 -o CMakeFiles/cmTC_8fe53.dir/src.cxx.o -c /Users/erage/go/src/github.com/prazd/ton_build_sctipts/liteclient-build/CMakeFiles/CMakeTmp/src.cxx
+warning: unknown warning option '-Wimplicit-fallthrough=2'; did you mean '-Wimplicit-fallthrough'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wimplicit-fallthrough=2'; did you mean '-Wimplicit-fallthrough'? [-Wunknown-warning-option]
+2 warnings generated.
+Linking CXX executable cmTC_8fe53
+/usr/local/Cellar/cmake/3.15.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8fe53.dir/link.txt --verbose=1
+/Library/Developer/CommandLineTools/usr/bin/c++   -march=native -std=c++14 -fno-omit-frame-pointer -Wall -Wextra -DHAVE_CXX_FLAG_WIMPLICIT_FALLTHROUGH_2 -Wimplicit-fallthrough=2 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_8fe53.dir/src.cxx.o  -o cmTC_8fe53 
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test HAVE_CXX_FLAG_WDUPLICATED_BRANCHES failed with the following output:
+Change Dir: /Users/erage/go/src/github.com/prazd/ton_build_sctipts/liteclient-build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_71554/fast && /Library/Developer/CommandLineTools/usr/bin/make -f CMakeFiles/cmTC_71554.dir/build.make CMakeFiles/cmTC_71554.dir/build
+Building CXX object CMakeFiles/cmTC_71554.dir/src.cxx.o
+/Library/Developer/CommandLineTools/usr/bin/c++    -march=native -std=c++14 -fno-omit-frame-pointer -Wall -Wextra -Wpointer-arith -Wcast-qual -Wsign-compare -DHAVE_CXX_FLAG_WDUPLICATED_BRANCHES -Wduplicated-branches -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -fPIE   -Wduplicated-branches -o CMakeFiles/cmTC_71554.dir/src.cxx.o -c /Users/erage/go/src/github.com/prazd/ton_build_sctipts/liteclient-build/CMakeFiles/CMakeTmp/src.cxx
+warning: unknown warning option '-Wduplicated-branches' [-Wunknown-warning-option]
+warning: unknown warning option '-Wduplicated-branches' [-Wunknown-warning-option]
+2 warnings generated.
+Linking CXX executable cmTC_71554
+/usr/local/Cellar/cmake/3.15.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_71554.dir/link.txt --verbose=1
+/Library/Developer/CommandLineTools/usr/bin/c++   -march=native -std=c++14 -fno-omit-frame-pointer -Wall -Wextra -Wpointer-arith -Wcast-qual -Wsign-compare -DHAVE_CXX_FLAG_WDUPLICATED_BRANCHES -Wduplicated-branches -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_71554.dir/src.cxx.o  -o cmTC_71554 
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test HAVE_CXX_FLAG_WDUPLICATED_COND failed with the following output:
+Change Dir: /Users/erage/go/src/github.com/prazd/ton_build_sctipts/liteclient-build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_9e9f7/fast && /Library/Developer/CommandLineTools/usr/bin/make -f CMakeFiles/cmTC_9e9f7.dir/build.make CMakeFiles/cmTC_9e9f7.dir/build
+Building CXX object CMakeFiles/cmTC_9e9f7.dir/src.cxx.o
+/Library/Developer/CommandLineTools/usr/bin/c++    -march=native -std=c++14 -fno-omit-frame-pointer -Wall -Wextra -Wpointer-arith -Wcast-qual -Wsign-compare -DHAVE_CXX_FLAG_WDUPLICATED_COND -Wduplicated-cond -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -fPIE   -Wduplicated-cond -o CMakeFiles/cmTC_9e9f7.dir/src.cxx.o -c /Users/erage/go/src/github.com/prazd/ton_build_sctipts/liteclient-build/CMakeFiles/CMakeTmp/src.cxx
+warning: unknown warning option '-Wduplicated-cond'; did you mean '-Wduplicate-enum'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wduplicated-cond'; did you mean '-Wduplicate-enum'? [-Wunknown-warning-option]
+2 warnings generated.
+Linking CXX executable cmTC_9e9f7
+/usr/local/Cellar/cmake/3.15.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9e9f7.dir/link.txt --verbose=1
+/Library/Developer/CommandLineTools/usr/bin/c++   -march=native -std=c++14 -fno-omit-frame-pointer -Wall -Wextra -Wpointer-arith -Wcast-qual -Wsign-compare -DHAVE_CXX_FLAG_WDUPLICATED_COND -Wduplicated-cond -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_9e9f7.dir/src.cxx.o  -o cmTC_9e9f7 
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test HAVE_CXX_FLAG_WALLOC_ZERO failed with the following output:
+Change Dir: /Users/erage/go/src/github.com/prazd/ton_build_sctipts/liteclient-build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_c2f9f/fast && /Library/Developer/CommandLineTools/usr/bin/make -f CMakeFiles/cmTC_c2f9f.dir/build.make CMakeFiles/cmTC_c2f9f.dir/build
+Building CXX object CMakeFiles/cmTC_c2f9f.dir/src.cxx.o
+/Library/Developer/CommandLineTools/usr/bin/c++    -march=native -std=c++14 -fno-omit-frame-pointer -Wall -Wextra -Wpointer-arith -Wcast-qual -Wsign-compare -DHAVE_CXX_FLAG_WALLOC_ZERO -Walloc-zero -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -fPIE   -Walloc-zero -o CMakeFiles/cmTC_c2f9f.dir/src.cxx.o -c /Users/erage/go/src/github.com/prazd/ton_build_sctipts/liteclient-build/CMakeFiles/CMakeTmp/src.cxx
+warning: unknown warning option '-Walloc-zero'; did you mean '-Wdiv-by-zero'? [-Wunknown-warning-option]
+warning: unknown warning option '-Walloc-zero'; did you mean '-Wdiv-by-zero'? [-Wunknown-warning-option]
+2 warnings generated.
+Linking CXX executable cmTC_c2f9f
+/usr/local/Cellar/cmake/3.15.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c2f9f.dir/link.txt --verbose=1
+/Library/Developer/CommandLineTools/usr/bin/c++   -march=native -std=c++14 -fno-omit-frame-pointer -Wall -Wextra -Wpointer-arith -Wcast-qual -Wsign-compare -DHAVE_CXX_FLAG_WALLOC_ZERO -Walloc-zero -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_c2f9f.dir/src.cxx.o  -o cmTC_c2f9f 
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test HAVE_CXX_FLAG_WLOGICAL_OP failed with the following output:
+Change Dir: /Users/erage/go/src/github.com/prazd/ton_build_sctipts/liteclient-build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_8256b/fast && /Library/Developer/CommandLineTools/usr/bin/make -f CMakeFiles/cmTC_8256b.dir/build.make CMakeFiles/cmTC_8256b.dir/build
+Building CXX object CMakeFiles/cmTC_8256b.dir/src.cxx.o
+/Library/Developer/CommandLineTools/usr/bin/c++    -march=native -std=c++14 -fno-omit-frame-pointer -Wall -Wextra -Wpointer-arith -Wcast-qual -Wsign-compare -DHAVE_CXX_FLAG_WLOGICAL_OP -Wlogical-op -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -fPIE   -Wlogical-op -o CMakeFiles/cmTC_8256b.dir/src.cxx.o -c /Users/erage/go/src/github.com/prazd/ton_build_sctipts/liteclient-build/CMakeFiles/CMakeTmp/src.cxx
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+2 warnings generated.
+Linking CXX executable cmTC_8256b
+/usr/local/Cellar/cmake/3.15.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8256b.dir/link.txt --verbose=1
+/Library/Developer/CommandLineTools/usr/bin/c++   -march=native -std=c++14 -fno-omit-frame-pointer -Wall -Wextra -Wpointer-arith -Wcast-qual -Wsign-compare -DHAVE_CXX_FLAG_WLOGICAL_OP -Wlogical-op -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_8256b.dir/src.cxx.o  -o cmTC_8256b 
+
+
+Source file was:
+int main() { return 0; }

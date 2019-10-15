@@ -1,0 +1,2 @@
+ccache /Library/Developer/CommandLineTools/usr/bin/ar qc libtl_api.a  CMakeFiles/tl_api.dir/generate/auto/tl/ton_api.cpp.o CMakeFiles/tl_api.dir/generate/auto/tl/ton_api_json.cpp.o
+ccache /Library/Developer/CommandLineTools/usr/bin/ranlib libtl_api.a

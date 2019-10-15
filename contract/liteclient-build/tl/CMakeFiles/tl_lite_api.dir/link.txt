@@ -1,0 +1,2 @@
+ccache /Library/Developer/CommandLineTools/usr/bin/ar qc libtl_lite_api.a  CMakeFiles/tl_lite_api.dir/generate/auto/tl/lite_api.cpp.o
+ccache /Library/Developer/CommandLineTools/usr/bin/ranlib libtl_lite_api.a

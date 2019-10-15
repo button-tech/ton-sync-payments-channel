@@ -1,0 +1,18 @@
+# Hashes of file build rules.
+f766cb61ab40dd6746a57f02d131336a /Users/erage/go/src/github.com/prazd/ton_build_sctipts/lite-client/crypto/block/block-auto.cpp
+3684adfcf2d993b14d164650e4cef5c9 /Users/erage/go/src/github.com/prazd/ton_build_sctipts/lite-client/crypto/smartcont/config-code.fif
+3cef627a3dd6b65bc64bdb46e58df2ce /Users/erage/go/src/github.com/prazd/ton_build_sctipts/lite-client/crypto/smartcont/elector-code.fif
+ce378da8708f611ea187efdbb662f845 /Users/erage/go/src/github.com/prazd/ton_build_sctipts/lite-client/crypto/smartcont/highload-wallet-code.fif
+fbee22bb781dbf7197773beeb1ff0d42 /Users/erage/go/src/github.com/prazd/ton_build_sctipts/lite-client/crypto/smartcont/highload-wallet-v2-code.fif
+6536961ed58c9fe386abe0a24a8fff7f /Users/erage/go/src/github.com/prazd/ton_build_sctipts/lite-client/crypto/smartcont/simple-wallet-code.fif
+01008399ba20969a4d3c1cdf0f2af902 /Users/erage/go/src/github.com/prazd/ton_build_sctipts/lite-client/crypto/smartcont/wallet-code.fif
+8adfc909becd9a27a6af172e6eab907e /Users/erage/go/src/github.com/prazd/ton_build_sctipts/lite-client/tl/generate/auto/tl/ton_api.cpp
+489d3b1e810e0dbc5269c17bfa424d54 CMakeFiles/prepare_cross_compiling
+891536287344c1d495bd6bc00f96e394 crypto/CMakeFiles/gen_fif_smartcont_config_code_fif
+891536287344c1d495bd6bc00f96e394 crypto/CMakeFiles/gen_fif_smartcont_elector_code_fif
+891536287344c1d495bd6bc00f96e394 crypto/CMakeFiles/gen_fif_smartcont_highload_wallet_code_fif
+891536287344c1d495bd6bc00f96e394 crypto/CMakeFiles/gen_fif_smartcont_highload_wallet_v__code_fif
+891536287344c1d495bd6bc00f96e394 crypto/CMakeFiles/gen_fif_smartcont_simple_wallet_code_fif
+891536287344c1d495bd6bc00f96e394 crypto/CMakeFiles/gen_fif_smartcont_wallet_code_fif
+891536287344c1d495bd6bc00f96e394 crypto/CMakeFiles/tlb_generate_block
+6757157385ce0f17071eab84c9dcc93d tl/generate/CMakeFiles/tl_generate_common

@@ -1,0 +1,65 @@
+() recv_internal(slice in_msg) impure {
+    ;; nothing to do
+}
+
+() recv_external(slice in_msg) impure {
+    var cs = in_msg;
+
+    var signature = cs~load_bits(512);
+    signature~dump();
+
+    var ref = cs~load_ref().begin_parse();
+
+    cs.end_parse();
+
+    var state_num = ref~load_uint(64);
+    state_num~dump();
+    var amount1 = ref~load_grams();
+    amount1~dump();
+    var amount2 = ref~load_grams();
+    amount2~dump();
+    ref.end_parse();
+ 
+    var storage = get_data().begin_parse();
+    storage~dump();
+
+    var (isVerificated, public_key1, public_key2) = (storage~load_uint(64),
+        storage~load_uint(256),
+        storage~load_uint(256));
+    
+    isVerificated~dump();
+    public_key1~dump();
+    public_key2~dump();
+
+    storage.end_parse();
+
+    accept_message();
+
+    var checking_slice = begin_cell()
+      .store_uint(state_num, 64)
+      .store_grams(amount1)
+      .store_grams(amount2)
+      .store_uint(public_key1, 256)
+      .store_uint(public_key2, 256)
+      .end_cell();
+
+    checking_slice~dump();
+
+    var data_slice_hash = slice_hash(checking_slice.begin_parse());
+    data_slice_hash~dump();
+
+    ifnot (check_signature(data_slice_hash, signature, public_key1)) {
+        ;; incorrect signature
+        set_data(begin_cell()
+            .store_uint(1, 32)
+            .store_uint(public_key1, 256)
+            .store_uint(public_key2, 256)
+            .end_cell());
+    } else {
+        set_data(begin_cell()
+            .store_uint(2, 32)
+            .store_uint(public_key1, 256)
+            .store_uint(public_key2, 256)
+            .end_cell());
+    }
+}

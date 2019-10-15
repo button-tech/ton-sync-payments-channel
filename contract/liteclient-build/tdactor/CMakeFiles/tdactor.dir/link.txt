@@ -1,0 +1,2 @@
+ccache /Library/Developer/CommandLineTools/usr/bin/ar qc libtdactor.a  CMakeFiles/tdactor.dir/td/actor/core/ActorExecutor.cpp.o CMakeFiles/tdactor.dir/td/actor/core/CpuWorker.cpp.o CMakeFiles/tdactor.dir/td/actor/core/IoWorker.cpp.o CMakeFiles/tdactor.dir/td/actor/core/Scheduler.cpp.o CMakeFiles/tdactor.dir/td/actor/MultiPromise.cpp.o
+ccache /Library/Developer/CommandLineTools/usr/bin/ranlib libtdactor.a

@@ -1,0 +1,98 @@
+"TonUtil.fif" include
+"Asm.fif" include
+
+"../outputFileWithFiftAsm.fif" constant asm_code-source
+
+"../../alice/alice.pk" load-generate-keypair
+constant alice_pk
+constant alice_pub
+
+"../../bob/bob.pk" load-generate-keypair
+constant bob_pk
+constant bob_pub 
+
+"../../bob/bob.addr" load-address nip constant bob_address
+"../../alice/alice.addr" load-address nip constant alice_address
+
+alice_address alice_pk ed25519_sign_uint constant alice_address_signature
+bob_address bob_pk ed25519_sign_uint constant bob_address_signature
+
+PROGRAM{
+  asm_code-source include
+}END>c constant code
+
+0 constant current_seqno
+3 constant state_num
+3 constant new_state_num
+
+<b 
+  alice_pub B,
+  ".5" $>GR Gram,                                                                         
+b> constant alice_contract_state
+
+<b 
+  bob_pub B,
+  ".6" $>GR Gram,                                                                         
+b> constant bob_contract_state
+
+<b 
+  current_seqno 32 u,  // seqno
+  0x4e73744b 32 u,     // contract_status
+  0 32 u,             // time_to_send
+  state_num 64 u,      // state_num
+  alice_contract_state ref,
+  bob_contract_state   ref,
+b> constant storage
+
+".1" $>GR constant first_user_amount
+"1" $>GR constant second_user_amount
+
+<b 
+  36206311030299996349083233568547859740825703489576845723826167917779499779530 
+  256 u,
+  new_state_num 64 u,   // state_num
+  first_user_amount Gram,  // first user amount
+  second_user_amount Gram,  // second user amount
+b> constant state
+
+state hash .s drop
+state hash alice_pk ed25519_sign_uint constant alice_signature
+state hash bob_pk ed25519_sign_uint constant bob_signature
+
+<b   
+  current_seqno 32 u,                 // seqno
+  <b 
+    36206311030299996349083233568547859740825703489576845723826167917779499779530 
+    256 u,
+    new_state_num 64 u,   // state_num
+    first_user_amount Gram,  // first user amount
+    second_user_amount Gram,  // second user amount
+  b> ref,
+  <b
+    <b alice_signature B, b> ref,
+    <b bob_signature B, b> ref,
+    <b 
+      alice_address_signature B,
+      alice_address 256 u,
+    b> ref,
+    <b 
+      bob_address_signature B,
+      bob_address 256 u,
+    b> ref,
+  b> ref,
+b> constant body_message
+
+body_message hash alice_pk ed25519_sign_uint constant message_signature
+
+<b              
+  message_signature B,
+  body_message <s s,
+b> constant body
+body ."External message for initialization is " <s csr. cr
+body <s recv_external code <s storage runvm .s
+
+constant updated_storage
+// should be 0
+constant exit_code
+."Exit code " exit_code . cr
+."Updated storage: " cr updated_storage <s csr. cr

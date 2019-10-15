@@ -1,0 +1,66 @@
+#!/usr/bin/env fift -s
+"TonUtil.fif" include
+"Asm.fif" include
+
+0 =: wc  
+"pool" constant file-base
+
+."Creating new pool in workchain " wc . cr
+"outputFileWithFiftAsm.fif" constant lightning-source
+
+0 constant init_seqno
+true constant bounce
+
+"alice/alice.pk" load-generate-keypair
+constant alice_pk
+constant alice_public_key
+
+"bob/bob.pk" load-generate-keypair
+constant bob_pk
+constant bob_public_key 
+
+PROGRAM{
+  lightning-source include
+}END>c
+
+<b 
+  alice_public_key B,   // public_key
+  0 Gram,               // amount
+b> constant alice_state
+
+<b 
+  bob_public_key B,     // public_key
+  0 Gram,               // amount
+b> constant bob_state
+
+<b 
+  init_seqno 32 u, // seqno
+  0x00000000 32 u, // contract_status
+  0 32 u,          // time_to_send
+  0 64 u,          // init state
+  alice_state ref,
+  bob_state ref,
+b> // storage
+
+null // no libraries
+<b b{0011} s, 3 roll ref, rot ref, swap dict, b> // create StateInit
+dup ."StateInit: " <s csr. cr
+dup hashu wc swap 2dup 2constant wallet_addr
+."new pool address = " 2dup .addr cr
+2dup file-base +".addr" save-address-verbose
+."Non-bounceable address (for init): " 2dup 7 .Addr cr
+."Bounceable address (for later access): " 6 .Addr cr
+
+<b 
+  b{1000100} s, 
+  wallet_addr addr, 
+  b{000010} s, 
+  swap <s s, 
+  b{0} s, 
+  0 32 u,
+b>
+
+dup ."External message for initialization is " <s csr. cr
+2 boc+>B dup Bx. cr
+file-base +"-query.boc" tuck B>file
+."(Saved money giver creating query to file " type .")" cr

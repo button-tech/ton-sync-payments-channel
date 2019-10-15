@@ -1,0 +1,82 @@
+"Asm.fif" include
+"TonUtil.fif" include
+
+"../outputFileWithFiftAsm.fif" constant asm_code-source
+
+"../../alice/alice.pk" load-generate-keypair
+constant alice_pk
+constant alice_pub
+
+"../../bob/bob.pk" load-generate-keypair
+constant bob_pk
+constant bob_pub 
+
+PROGRAM{
+  asm_code-source include
+}END>c constant code
+
+3 constant current_seqno
+5 constant state_num
+100 constant timeout_unix
+
+<b 
+  alice_pub B,
+  "11" $>GR Gram,                                                                         
+b> constant alice_contract_state
+
+<b 
+  bob_pub B,
+  "14" $>GR Gram,                                                                         
+b> constant bob_contract_state
+
+<b 
+  current_seqno 32 u,  // seqno
+  0x47657424 32 u,     // contract_status
+  timeout_unix 32 u,            // time_to_send
+  state_num 64 u,      // state_num
+  alice_contract_state ref,
+  bob_contract_state   ref,
+b> constant storage
+
+"20" $>GR constant first_user_amount
+"5" $>GR  constant second_user_amount
+
+<b 
+  state_num 64 u,          // state_num
+  first_user_amount Gram,  // first user amount
+  second_user_amount Gram, // second user amount
+b> constant state
+
+<b 
+  <b
+    state <s s,
+  b> hash alice_pk ed25519_sign_uint B, 
+b> constant alice_signature
+
+<b 
+  <b
+    state <s s,
+  b> hash bob_pk ed25519_sign_uint B, 
+b> constant bob_signature
+
+<b   
+  current_seqno 32 u,      // seqno
+  state <s s,
+  alice_signature ref,     // alice signature
+  bob_signature ref,       // bob signature
+b> constant body_message
+
+body_message hash alice_pk ed25519_sign_uint constant message_signature
+
+<b 
+  message_signature B,
+  body_message <s s,
+b> constant body
+
+body <s recv_external code <s storage runvm .s
+
+constant updated_storage
+// should be 0
+constant exit_code
+."Exit code " exit_code . cr
+."Updated storage: " cr updated_storage <s csr. cr

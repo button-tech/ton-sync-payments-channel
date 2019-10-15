@@ -1,0 +1,42 @@
+"Asm.fif" include
+"TonUtil.fif" include
+"../fift_base_code.fif" include
+
+"eva.pk" load-generate-keypair
+constant eva_pk
+constant eva_pub 
+
+<b 
+  <b
+    state <s s,
+  b> hash eva_pk ed25519_sign_uint B, 
+b> constant alice_signature
+
+<b 
+  <b
+    state <s s,
+  b> hash bob_pk ed25519_sign_uint B, 
+b> constant bob_signature
+
+<b   
+  current_seqno 32 u,      // seqno
+  state <s s,
+  alice_signature ref,     // alice signature
+  bob_signature ref,       // bob signature
+b> constant body_message
+
+body_message hash alice_pk ed25519_sign_uint constant message_signature
+
+<b 
+  message_signature B,
+  body_message <s s,
+b> constant body
+
+body <s recv_external code <s storage runvm .s
+
+constant updated_storage
+
+// should be 37
+constant exit_code
+."Exit code " exit_code . cr
+."Updated storage: " cr updated_storage <s csr. cr

@@ -1,0 +1,49 @@
+#!/usr/bin/env fift -s
+"TonUtil.fif" include
+"Asm.fif" include
+
+$1 =: private_key_path
+$2 parse-int =: seqno
+$3 parse-int =: state_num
+$4 $>GR =: amount_one
+$5 $>GR =: amount_two
+$6 =: signatures_path
+"pool" =: file_base
+
+private_key_path +".pk" load-generate-keypair
+constant alice_pk
+constant alice_pub
+
+file_base +".addr" load-address
+2dup 2constant pool_addr
+."Source pool address = " 2dup .addr cr 6 .Addr cr
+signatures_path +".fif" include
+
+pool_addr nip constant pool_address
+<b 
+  pool_address 256 u,
+  state_num 64 u,   // state_num
+  amount_one Gram,  // first user amount
+  amount_two Gram,  // second user amount
+b> constant state
+
+<b   
+  seqno 32 u,                 // seqno
+  state ref,
+  <b
+    <b signature_one B, b> ref,
+    <b signature_two B, b> ref,
+  b> ref,
+b> constant body_message
+
+body_message hash alice_pk ed25519_sign_uint constant message_signature
+
+<b b{1000100} s, pool_addr addr, 0 Gram, b{00} s, 
+  message_signature B,
+  body_message <s s,
+b>
+
+dup ."External message for initialization is " <s csr. cr
+2 boc+>B dup Bx. cr
+file_base +"-query.boc" tuck B>file
+."(Saved money giver creating query to file " type .")" cr

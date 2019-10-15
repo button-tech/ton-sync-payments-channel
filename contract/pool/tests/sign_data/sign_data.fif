@@ -1,0 +1,29 @@
+"TonUtil.fif" include
+
+true constant bounce
+
+$1 parse-int =: state_num
+$2 $>GR =: amount1
+$3 $>GR =: amount2
+$4 bounce parse-load-address =: bounce 2=: partner_address
+
+partner_address constant partner_public_key drop
+
+<b 
+  state_num 64 u,
+  amount1 Gram,
+  amount2 Gram,
+  "user.pk" load-generate-keypair
+  constant wallet_pk
+  B,
+  partner_public_key 256 u,
+b> constant signing_message
+
+cr signing_message ."Signing message hex: " <s csr. cr
+cr signing_message ."Signing message: " .s drop cr
+
+signing_message hash 
+cr dup ."Hash: " . cr cr
+wallet_pk ed25519_sign_uint constant signature
+
+signature ."Signature: " .dump

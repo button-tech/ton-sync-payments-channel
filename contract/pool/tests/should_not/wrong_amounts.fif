@@ -1,0 +1,31 @@
+"Asm.fif" include
+"TonUtil.fif" include
+"../fift_base_code.fif" include
+
+<b 
+  alice_pub B,
+  11 Gram,                                                                         
+b> constant alice_contract_state
+
+<b 
+  bob_pub B,
+  2 Gram,                                                                         
+b> constant bob_contract_state
+
+<b 
+  current_seqno 32 u, // seqno
+  0x4e73743b 32 u,    // contract_status
+  0 32 u,             // time_to_send
+  0 64 u,             // state_num
+  alice_contract_state ref,
+  bob_contract_state   ref,
+b> constant storage
+
+body <s recv_external code <s storage runvm .s
+
+constant updated_storage
+
+// should be 39
+constant exit_code
+."Exit code " exit_code . cr
+."Updated storage: " cr updated_storage <s csr. cr

@@ -1,0 +1,2 @@
+ccache /Library/Developer/CommandLineTools/usr/bin/ar qc libtdnet.a  CMakeFiles/tdnet.dir/td/net/FdListener.cpp.o CMakeFiles/tdnet.dir/td/net/TcpListener.cpp.o CMakeFiles/tdnet.dir/td/net/UdpServer.cpp.o
+ccache /Library/Developer/CommandLineTools/usr/bin/ranlib libtdnet.a

@@ -1,0 +1,57 @@
+"Asm.fif" include
+"TonUtil.fif" include
+
+"../outputFileWithFiftAsm.fif" constant asm_code-source
+
+"../../alice/alice.pk" load-generate-keypair
+constant alice_pk
+constant alice_pub
+
+"../../bob/bob.pk" load-generate-keypair
+constant bob_pk
+constant bob_pub 
+
+PROGRAM{
+  asm_code-source include
+}END>c constant code
+
+0 constant current_seqno
+0 constant state_num
+0 constant new_state_num
+
+<b 
+  alice_pub B,
+  0 Gram,                                                                         
+b> constant alice_contract_state
+
+<b 
+  bob_pub B,
+  0 Gram,                                                                         
+b> constant bob_contract_state
+
+<b 
+  current_seqno 32 u,  // seqno
+  0x1ee564fc 32 u,     // contract_status
+  0 32 u,             // time_to_send
+  state_num 64 u,      // state_num
+  alice_contract_state ref,
+  bob_contract_state   ref,
+b> constant storage
+
+<b   
+  current_seqno 32 u,      // seqno
+b> constant body_message
+body_message hash alice_pk ed25519_sign_uint constant message_signature
+
+<b
+  message_signature B,
+  body_message <s s,
+b> constant body
+
+body <s recv_external code <s storage runvm .s
+
+constant updated_storage
+// should be 0
+constant exit_code
+."Exit code " exit_code . cr
+."Updated storage: " cr updated_storage <s csr. cr

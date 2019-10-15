@@ -1,0 +1,2 @@
+ccache /Library/Developer/CommandLineTools/usr/bin/ar qc liblite-client-common.a  CMakeFiles/lite-client-common.dir/lite-client-common.cpp.o
+ccache /Library/Developer/CommandLineTools/usr/bin/ranlib liblite-client-common.a
