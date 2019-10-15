@@ -307,10 +307,8 @@ func executor(userText string) {
 				if contractStatus == "1197831206" {
 					accountBalance, _ := getTonBalance(paychannel.AccountAddress)
 					smartBalance, _ := getTonBalance(paychannel.SmartContractAddress)
-					partnerBalance, _ := getTonBalance(paychannel.PartnerAddress)
 					fmt.Println("Success withdrawal!")
 					fmt.Println("Your balance in workchain now: " + convertToGrams(accountBalance))
-					fmt.Println("Partner balance in workchain now: " + convertToGrams(partnerBalance))
 					fmt.Println("Smart contract balance in workchain now: " + convertToGrams(smartBalance))
 					os.Exit(1)
 				}
