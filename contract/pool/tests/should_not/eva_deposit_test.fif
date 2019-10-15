@@ -1,0 +1,39 @@
+"Asm.fif" include
+"TonUtil.fif" include
+
+"../outputFileWithFiftAsm.fif" constant asm_code-source
+
+PROGRAM{
+  asm_code-source include
+}END>c constant code
+
+<b 
+  40903074867710982547581406666219965278213584356196843955889987730751114236518 256 u, // public_key
+  "0" $>GR Gram,                                                                              // amount
+b> constant alice_state
+
+<b 
+  15898261094394173598495570988936176406260781450229697399675219965108138763469 256 u, // public_key
+  "0" $>GR Gram,                                                                              // amount
+b> constant bob_state
+
+<b 
+  0 32 u,          // seqno
+  0x1ee564fc 32 u, // contract_status
+  0 32 u,          // time_to_send
+  0 32 u,          // state_num
+  alice_state ref,
+  bob_state ref,
+b> constant storage
+
+x{680191F2A2585072FD7F838B4E52F3A8F59B360B2FF6FDB2B966DDE9F7D83C12DD4D000445F25579D4590579A2C96571EE1B07731479726F3F2749EF92092E9575ADE89017D78400061458600000018B7752D884BB44CE982A22A9AA4_}
+constant body
+
+1000 body s>c <b b> <s recv_internal code <s storage runvm .s
+
+constant updated_storage
+
+// should be 34
+constant exit_code
+."Exit code " exit_code . cr
+."Updated storage: " cr updated_storage <s csr. cr

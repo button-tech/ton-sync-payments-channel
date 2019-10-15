@@ -1,0 +1,2 @@
+ccache /Library/Developer/CommandLineTools/usr/bin/ar qc libadnllite.a  CMakeFiles/adnllite.dir/adnl-ext-client.cpp.o CMakeFiles/adnllite.dir/adnl-ext-connection.cpp.o CMakeFiles/adnllite.dir/adnl-query.cpp.o
+ccache /Library/Developer/CommandLineTools/usr/bin/ranlib libadnllite.a

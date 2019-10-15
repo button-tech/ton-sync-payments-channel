@@ -1,0 +1,2 @@
+ccache /Library/Developer/CommandLineTools/usr/bin/ar qc libtl-lite-utils.a  CMakeFiles/tl-lite-utils.dir/lite-utils.cpp.o
+ccache /Library/Developer/CommandLineTools/usr/bin/ranlib libtl-lite-utils.a

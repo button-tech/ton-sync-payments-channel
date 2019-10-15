@@ -1,0 +1,44 @@
+"Asm.fif" include
+"TonUtil.fif" include
+
+"outputFileWithFiftAsm.fif" constant check_signature-source
+
+true constant bounce
+
+PROGRAM{
+  check_signature-source include
+}END>c constant code
+
+$1 parse-int =: state_num
+$2 $>GR =: amount1
+$3 $>GR =: amount2
+$4 bounce parse-load-address =: bounce 2=: partner_address
+B{BF4DE546F29184FEB59EDDA55226D29215C8C51071474B8A81D4D96C23750B94BE989ED0EE724F53B11C30EB63BE1825C97A200EA93659FA454C80E1B2B1A40C} =: signature
+
+partner_address constant partner_public_key drop
+<b 0 64 u,   // isVerificated
+   "user.pk" load-generate-keypair
+   constant wallet_pk
+   B,
+   partner_public_key 256 u,
+b> constant storage
+
+<b 
+  state_num 64 u,
+  amount1 Gram,
+  amount2 Gram,
+b> constant data_reference
+
+<b signature B, data_reference ref, b> constant body
+
+
+storage ."Initial storage: " <s csr. cr
+data_reference ."Reference data: " .s drop cr
+<b signature B, b> ."Signature: " <s .s drop cr 
+
+body <s recv_external code <s storage runvm .s
+
+constant updated_storage
+constant exit_code
+."Exit code " exit_code . cr
+."Updated storage: " cr updated_storage <s csr. cr

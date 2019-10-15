@@ -1,0 +1,5 @@
+"TonUtil.fif" include
+
+$1 =: file_base
+file_base +".addr" load-address
+6 .Addr cr

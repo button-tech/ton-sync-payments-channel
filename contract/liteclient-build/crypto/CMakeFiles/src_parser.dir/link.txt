@@ -1,0 +1,2 @@
+ccache /Library/Developer/CommandLineTools/usr/bin/ar qc libsrc_parser.a  CMakeFiles/src_parser.dir/parser/srcread.cpp.o CMakeFiles/src_parser.dir/parser/lexer.cpp.o CMakeFiles/src_parser.dir/parser/symtable.cpp.o
+ccache /Library/Developer/CommandLineTools/usr/bin/ranlib libsrc_parser.a
