@@ -10,7 +10,7 @@ https://github.com/button-tech/ton-sync-payments-channel
 
 **DEMO**:
 We also have a video demo how to run all of that stuff:
-https://youtu.be/R2e-HK6sRkQ
+https://www.youtube.com/watch?v=GUhWrnylGDk
 
 Thank you for a contest, it was great challenge for us,
 BW Team
