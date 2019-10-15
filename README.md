@@ -8,7 +8,9 @@ We will not attach pk and other hardcoded data to our github:
 https://github.com/button-tech/ton-sync-payments-channel
 
 
+**DEMO**:
 We also have a video demo how to run all of that stuff:
+https://youtu.be/R2e-HK6sRkQ
 
 Thank you for a contest, it was great challenge for us,
 BW Team
