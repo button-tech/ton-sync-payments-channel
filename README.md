@@ -2,7 +2,7 @@
 
 ## Specially for people who will test (TON Team)
 
-We already setted up private keys, and deplyed contract address for you, however, you can use your own keys and deploy contract again - but it will take more steps.
+We already setted up private keys, and deplyed contract for you, however, you can use your own keys and deploy contract again - but it will take more steps.
 
 We will not attach pk and other hardcoded data to our github:
 https://github.com/button-tech/ton-sync-payments-channel
