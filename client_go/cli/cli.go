@@ -63,9 +63,9 @@ func getSmartContractAddress() string {
 
 func New() {
 
-	fmt.Println(" ----------------------------------------")
-	fmt.Println("|Hi, this is TON console for HACK from BW|")
-	fmt.Println(" ----------------------------------------")
+	fmt.Println(" --------------------------------------------")
+	fmt.Println("|Welcome to the sync channel for HACK from BW|")
+	fmt.Println(" --------------------------------------------")
 
 	paychannel.SmartContractAddress = getSmartContractAddress()
 	paychannel.AccountAddress = getAddress()
@@ -275,9 +275,6 @@ func executor(userText string) {
 		fmt.Println(paychannel.PartnerAddress)
 	case "getSmartContractAccount":
 		fmt.Println(paychannel.SmartContractAddress)
-
-	case "status":
-		fmt.Println(getContractStatus())
 
 	case "withdrawal":
 		if len(paychannel.ClientCreated.States.Storage) == 0 {
@@ -652,7 +649,6 @@ func sendStateToTheSmart(step string, stepInt int) error {
 			var c paychannel.ClientData
 			c.ExitStep = step
 			if newSeqnoInt > oldSeqnoInt {
-				var c paychannel.ClientData
 				backend.WriteCommandToChannel(&c, messages.WithdrawalCMD)
 			} else {
 				time.Sleep(time.Second * 5)
