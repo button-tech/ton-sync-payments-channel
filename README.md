@@ -18,6 +18,8 @@ You need to create catalog with `wallet.addr `and `wallet.pk` files (account wit
     bash deploy.sh
 ```
 
+You need docker.io to run CLI, we assume that it is installed on machine
+
 For server you need to run with port like:
 
 1) First terminal window:
