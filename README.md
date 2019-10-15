@@ -7,6 +7,9 @@ We already setted up private keys, and deplyed contract for you, however, you ca
 We will not attach pk and other hardcoded data to our github:
 https://github.com/button-tech/ton-sync-payments-channel
 
+
+We also have a video demo how to run all of that stuff:
+
 Thank you for a contest, it was great challenge for us,
 BW Team
 
