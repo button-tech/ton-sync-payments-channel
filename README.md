@@ -357,6 +357,8 @@ Max Spiridonov - Lead Backend developer at BUTTON Wallet (@maxSpt, ms@buttonwall
 
 Ivan Frolov - Backend developer at BUTTON Wallet (@ivnkhh, if@buttonwallet.com)
 
+Artem Vorobev - Lead Developer at BUTTON Wallet ( @artall64 artem@buttonwallet.com )
+
 Roman Semenov - One of the founders of Copperbits community, co-author of Tornado.cash Ethereum mixer (@poma, semenov.roma@gmail.com)
 
 Igor Gulamov Blockchain Researcher and Entrepreneur (@igor_gulamov, igor.gulamov@gmail.com)
