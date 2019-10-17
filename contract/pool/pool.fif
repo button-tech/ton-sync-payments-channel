@@ -24,22 +24,13 @@ PROGRAM{
 }END>c
 
 <b 
-  alice_public_key B,   // public_key
-  0 Gram,               // amount
-b> constant alice_state
-
-<b 
-  bob_public_key B,     // public_key
-  0 Gram,               // amount
-b> constant bob_state
-
-<b 
   init_seqno 32 u, // seqno
-  0x00000000 32 u, // contract_status
+  0x0 4 u,         // contract_status
+  alice_public_key B,
+  bob_public_key B,
   0 32 u,          // time_to_send
-  0 64 u,          // init state
-  alice_state ref,
-  bob_state ref,
+  0 Gram,
+  0 64 u,          
 b> // storage
 
 null // no libraries
