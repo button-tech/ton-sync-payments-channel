@@ -7,6 +7,11 @@ We already setted up private keys, and deplyed contract for you, however, you ca
 We will not attach pk and other hardcoded data to our github:
 https://github.com/button-tech/ton-sync-payments-channel
 
+
+**DEMO**:
+We also have a video demo how to run all of that stuff:
+https://www.youtube.com/watch?v=GUhWrnylGDk
+
 Thank you for a contest, it was great challenge for us,
 BW Team
 
@@ -18,11 +23,29 @@ You need to create a catalog with `wallet.addr `and `wallet.pk` files (account w
 
 1. Deploy Smart contract on TON
 
-```
-    bash deploy.sh
-```
+Go to `contract/pool` folder
 
-You need docker.io to run CLI, we assume that it is installed on machine
+We assume that you will use alice.pk and bob.pk with addresses, but you can create your own.
+
+For [./bind_commands.sh](#aliases) script
+You can see the details in `contract` folder
+
+1) Get seqno of giver
+```bash
+runmethod 0:e4b867748f26658f1fb18e9e0e755edbe2c7650a2bafadbd216f94c3142385e2 seqno
+```
+2) Run `./deploy.sh`  
+3)Enter non-bouncable address  
+4)Seqno of giver
+5)Done   
+
+Else you need to:  
+1)Run `fift pool.fif`  
+2)Get money on future contract address     
+3)Send `.boc` to the network     
+
+
+Important: You need docker.io to run CLI, we assume that it is installed on machine
 
 For the server you need to run with a port like:
 
@@ -333,6 +356,8 @@ Alexey Prazdnikov - Fullstack developer at BUTTON Wallet (@noprazd, ap@buttonwal
 Max Spiridonov - Lead Backend developer at BUTTON Wallet (@maxSpt, ms@buttonwallet.com)
 
 Ivan Frolov - Backend developer at BUTTON Wallet (@ivnkhh, if@buttonwallet.com)
+
+Artem Vorobev - Lead Developer at BUTTON Wallet ( @artall64 artem@buttonwallet.com )
 
 Roman Semenov - One of the founders of Copperbits community, co-author of Tornado.cash Ethereum mixer (@poma, semenov.roma@gmail.com)
 
