@@ -106,9 +106,9 @@
     var user_address = user_address_ref~load_uint(256);
 
     ;; will fixed in future
-    ;; var first_user_balance = get_balance().first() - 100000000; ;; 0.1GR for fee
+    ;; var remaining_balance = get_balance().first() - 100000000; ;; 0.1GR for fee
     ;; if (first_user_balance >= 0) {
-    ;;    depositSum = first_user_balance;
+    ;;    depositSum = remaining_balance;
     ;; }
 
     user_address_ref.end_parse();
