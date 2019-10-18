@@ -304,7 +304,7 @@ func executor(userText string) {
 		go func() {
 			for{
 				contractStatus := getContractStatus()
-				if contractStatus == "1197831206" {
+				if contractStatus == "7" {
 					accountBalance, _ := getTonBalance(paychannel.AccountAddress)
 					smartBalance, _ := getTonBalance(paychannel.SmartContractAddress)
 					fmt.Println("Success withdrawal!")
