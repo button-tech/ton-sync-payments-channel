@@ -51,12 +51,12 @@ For the server you need to run with a port like:
 
 1) First terminal window:
 ```
-docker run -it -p port:port -v path_to_catalog_with_files:/app/data prazd/synchannel
+docker run -it -p port:port -v path_to_catalog_with_files:/app/data prazd/synchannel:new
 ```
 
 2) Second terminal window:
 ```
-docker run -it -v path_to_another_catalog_with_files:/app/data prazd/synchannel
+docker run -it -v path_to_another_catalog_with_files:/app/data prazd/synchannel:new
 ```
 3) Enter smart contract address:
 
