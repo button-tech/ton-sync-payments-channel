@@ -3,10 +3,12 @@
 ;; Constants that represents statuses of contract during the payment channel operations
 ;; 0x0 - contract deployment state
 ;; 0x1 - channel opened. Ready for deposit
-;; 0x2 - deposit block. Each user can write a state
-;; 0x3 - first participant has written the state
-;; 0x4 - second participant has written the state
-;; 0x5 - channel closed. first participant can take the remaining amount back
+;; 0x2 - first person made deposit
+;; 0x3 - second person made deposit
+;; 0x4 - deposit block. Each user can write a state
+;; 0x5 - first participant has written the state
+;; 0x6 - second participant has written the state
+;; 0x7 - channel closed. first participant can take the remaining amount back
 
 
 () store_data(int seqno, int contract_status,
@@ -77,26 +79,27 @@
     var msg_hash = slice_hash(in_msg);
     if (check_signature(msg_hash, signature, first_user_pubkey)) {
         depositSum += msg_value;
+        contract_status = (depositSum != msg_value) ? 0x4 : 0x2;
     } elseif (check_signature(msg_hash, signature, second_user_pubkey)) {
         depositSum += msg_value;
+        contract_status = (depositSum != msg_value) ? 0x4 : 0x3;
     } else {
         throw(34);
     }
 
     accept_message();
 
-    store_data(seqno, 
-        (depositSum != msg_value) ? 0x2 : 0x1,
+    store_data(seqno, contract_status,
         first_user_pubkey, second_user_pubkey,
         0, depositSum, 0);
 }
 
-() get_money_back(in_msg, body_signature, first_user_pubkey, second_user_pubkey, depositSum) {
+() get_money_back(in_msg, body_signature, contract_status, first_user_pubkey, second_user_pubkey, depositSum) impure {
     var msg_hash = slice_hash(in_msg);
-    throw_unless(35, 
-        (check_signature(msg_hash, body_signature, first_user_pubkey)) | 
-        (check_signature(msg_hash, body_signature, second_user_pubkey))
-    );
+
+    var is_first_user = (check_signature(msg_hash, body_signature, first_user_pubkey)) & (contract_status == 0x2);
+    var is_second_user = (check_signature(msg_hash, body_signature, second_user_pubkey)) & (contract_status == 0x3);
+    throw_unless(35, is_first_user | is_second_user);
     
     var user_address_ref = in_msg~load_ref().begin_parse();
 
@@ -121,7 +124,7 @@
     var ds = get_data().begin_parse();
     var (seqno, contract_status) = (ds~load_uint(32), ds~load_uint(4));
 
-    if (contract_status == 0x1) {
+    if (contract_status < 0x4) {
         deposit(ds, in_msg, seqno, msg_value);
     }
 
@@ -157,19 +160,19 @@
     throw_unless(33, seqno == stored_seqno);
 
     ;; the user wants to get the deposit back when the second user has not yet made the deposit
-    if (contract_status == 0x1) {
-        get_money_back(in_msg, body_signature, first_user_pubkey, second_user_pubkey, depositSum);
-        store_data(stored_seqno, contract_status, first_user_pubkey, second_user_pubkey, 0, 0, 0);
+    if (contract_status <= 0x3) {
+        get_money_back(in_msg, body_signature, contract_status, first_user_pubkey, second_user_pubkey, depositSum);
+        store_data(stored_seqno, 0x1, first_user_pubkey, second_user_pubkey, 0, 0, 0);
         return ();
     }
 
     var msg_hash = slice_hash(in_msg);
     if (check_signature(msg_hash, body_signature, first_user_pubkey)) {
-        throw_unless(36, (contract_status != 0x3) | (now() >= time_to_send));
-        contract_status = 0x3; ;; first participant
+        throw_unless(36, (contract_status != 0x5) | (now() >= time_to_send));
+        contract_status = 0x5; ;; first participant
     } elseif (check_signature(msg_hash, body_signature, second_user_pubkey)) {
-        throw_unless(36, (contract_status != 0x4) | (now() >= time_to_send));
-        contract_status = 0x4; ;; second participant
+        throw_unless(36, (contract_status != 0x6) | (now() >= time_to_send));
+        contract_status = 0x6; ;; second participant
     } else {
         throw(35);
     }
@@ -236,7 +239,7 @@
 
         make_payment(first_user_address, first_user_amount);
         make_payment(second_user_address, second_user_amount);
-        contract_status = 0x5;
+        contract_status = 0x7;
     } else {
         state_num = new_state_num;
         time_to_send = now() + 86401;

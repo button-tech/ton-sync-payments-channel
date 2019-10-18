@@ -22,22 +22,13 @@ PROGRAM{
 }END>c constant code
 
 <b 
+  current_seqno 32 u, // seqno
+  0x3 4 u,         // contract_status
   alice_pub B,
-  ".5" $>GR Gram,                                                                         
-b> constant alice_contract_state
-
-<b 
   bob_pub B,
-  0 Gram,                                                                         
-b> constant bob_contract_state
-
-<b 
-  current_seqno 32 u,  // seqno
-  0x1ee564fc 32 u,     // contract_status
-  0 32 u,             // time_to_send
-  0 64 u,      // state_num
-  alice_contract_state ref,
-  bob_contract_state   ref,
+  0 32 u,          // time_to_send
+  20000000 Gram,
+  0 64 u,          
 b> constant storage
 
 <b   
@@ -45,7 +36,7 @@ b> constant storage
   <b address 256 u, b> ref,
 b> constant body_message
 
-body_message hash alice_pk ed25519_sign_uint constant message_signature
+body_message hash bob_pk ed25519_sign_uint constant message_signature
 
 <b 
   message_signature B,

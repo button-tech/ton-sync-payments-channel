@@ -1,31 +1,48 @@
 ;; Synchronous payment channel implementation: smart contract part
 
 ;; Constants that represents statuses of contract during the payment channel operations
-;; 0x00000000 - contract deployment state
-;; 0x1ee564fc - channel opened. Ready for deposit
-;; 0x4e73744b - deposit block. Each user can write a state
-;; 0x47657424 - first participant has written the state
-;; 0x47657425 - second participant has written the state
-;; 0x47657426 - channel closed. first participant can take the remaining amount back
+;; 0x0 - contract deployment state
+;; 0x1 - channel opened. Ready for deposit
+;; 0x2 - first person made deposit
+;; 0x3 - second person made deposit
+;; 0x4 - deposit block. Each user can write a state
+;; 0x5 - first participant has written the state
+;; 0x6 - second participant has written the state
+;; 0x7 - channel closed. first participant can take the remaining amount back
 
 
-() store_data(int seqno, int contract_status, int time_to_send, int state_num, cell first_user_state, cell second_user_state) impure {
+() store_data(int seqno, int contract_status,
+    int first_user_pubkey, int second_user_pubkey,
+    int time_to_send, int depositSum, int state_num) impure {
     set_data(begin_cell()
         .store_uint(seqno + 1, 32)
-        .store_uint(contract_status, 32)
-        .store_uint(time_to_send, 32)
+        .store_uint(contract_status, 4)
+        .store_uint(first_user_pubkey, 256)
+        .store_uint(second_user_pubkey, 256)
+        .store_uint(time_to_send, 32) ;; valid until 2038
+        .store_grams(depositSum)
         .store_uint(state_num, 64)
-        .store_ref(first_user_state)
-        .store_ref(second_user_state)
         .end_cell());
 }
 
-(int, int, int, int, cell, cell) get_contract_state(ds) {
-    var (stored_seqno, contract_status, time_to_send, state_num) = (ds~load_uint(32), ds~load_uint(32), ds~load_uint(32), ds~load_uint(64));
-    var (first_user_state_ref, second_user_state_ref) = (ds~load_ref(), ds~load_ref());
+(int, int, int, int, int, int, int) get_contract_state(ds) {
+    var (stored_seqno, contract_status, first_user_pubkey, second_user_pubkey, time_to_send, depositSum, state_num) = (
+        ds~load_uint(32), 
+        ds~load_uint(4), 
+        ds~load_uint(256),
+        ds~load_uint(256),
+        ds~load_uint(32),
+        ds~load_grams(), 
+        ds~load_uint(64)
+    );
+
     ds.end_parse();
 
-    return (stored_seqno, contract_status, time_to_send, state_num, first_user_state_ref, second_user_state_ref);
+    return (
+        stored_seqno, contract_status, 
+        first_user_pubkey, second_user_pubkey,
+        time_to_send, depositSum, state_num
+    );
 }
 
 () make_payment(int address, int amount) impure {
@@ -36,22 +53,6 @@
         .store_uint(0, 9 + 64 + 32 + 1)
         .store_uint(0x54455354, 33)
         .end_cell(), 3);
-}
-
-(cell, cell, int) prepare_new_states(int first_user_pubkey, int first_user_deposit_amount, int second_user_pubkey, int second_user_deposit_amount) impure {
-
-    var first_user_state = begin_cell()
-        .store_uint(first_user_pubkey, 256)
-        .store_grams(first_user_deposit_amount)
-        .end_cell();
-
-    var second_user_state = begin_cell()
-        .store_uint(second_user_pubkey, 256)
-        .store_grams(second_user_deposit_amount)
-        .end_cell();
-
-    return (first_user_state, second_user_state, 123 + 86401);
-
 }
 
 (int) get_state_hash(int contract_address, int amount_one, int amount_two, int state_num) impure {
@@ -68,114 +69,38 @@
 () deposit(ds, in_msg, int seqno, int msg_value) impure {
     var signature = in_msg~load_bits(512);
 
-    var (first_user_state, second_user_state) = (ds~load_ref().begin_parse(), ds~load_ref().begin_parse());
-
-    var (first_user_pubkey, first_user_amount) = (first_user_state~load_uint(256), first_user_state~load_grams());
-
-    var (second_user_pubkey, second_user_amount) = (second_user_state~load_uint(256), second_user_state~load_grams());
-
-    first_user_state.end_parse();
-    second_user_state.end_parse();
+    var ds = get_data().begin_parse();
+    var (
+        stored_seqno, contract_status, 
+        first_user_pubkey, second_user_pubkey,
+        time_to_send, depositSum, state_num
+    ) = get_contract_state(ds);
 
     var msg_hash = slice_hash(in_msg);
     if (check_signature(msg_hash, signature, first_user_pubkey)) {
-        first_user_amount += msg_value;
+        depositSum += msg_value;
+        contract_status = (depositSum != msg_value) ? 0x4 : 0x2;
     } elseif (check_signature(msg_hash, signature, second_user_pubkey)) {
-        second_user_amount += msg_value;
+        depositSum += msg_value;
+        contract_status = (depositSum != msg_value) ? 0x4 : 0x3;
     } else {
         throw(34);
     }
 
-    var first_state = begin_cell()
-        .store_uint(first_user_pubkey, 256)
-        .store_grams(first_user_amount);
-
-    var second_state = begin_cell()
-        .store_uint(second_user_pubkey, 256)
-        .store_grams(second_user_amount);
-
     accept_message();
 
-    store_data(seqno,
-        (first_user_amount != 0) & (second_user_amount != 0) ? 0x4e73744b : 0x1ee564fc,
-        0,
-        0,
-        first_state.end_cell(),
-        second_state.end_cell());
-}
-
-(cell, cell) get_money_back(in_msg, body_signature, first_user_state, second_user_state) {
-    var (first_user_pubkey, second_user_pubkey) = (first_user_state~load_uint(256), second_user_state~load_uint(256));
-    var (first_user_deposit_amount, second_user_deposit_amount) = (first_user_state~load_grams(), second_user_state~load_grams());
-
-    var msg_hash = slice_hash(in_msg);
-    throw_unless(35, 
-        (check_signature(msg_hash, body_signature, first_user_pubkey)) | 
-        (check_signature(msg_hash, body_signature, second_user_pubkey))
-    );
-    
-    var user_address_ref = in_msg~load_ref().begin_parse();
-
-    var user_address = user_address_ref~load_uint(256);
-    var amount = max(first_user_deposit_amount, second_user_deposit_amount); ;; assumption that smart contract has enough GR for fee
-    amount~dump();
-    user_address_ref.end_parse();
-    accept_message();
-
-    var new_first_user_state = begin_cell().store_uint(first_user_pubkey, 256).store_grams(0).end_cell();
-    var new_second_user_state = begin_cell().store_uint(second_user_pubkey, 256).store_grams(0).end_cell();
-
-    make_payment(user_address, amount);
-    return (
-        new_first_user_state,
-        new_second_user_state
-    );
-}
-
-int close_channel(signatures, first_user_pubkey, second_user_pubkey, first_user_amount, second_user_amount) impure {
-    var (first_user_addr_signature, second_user_addr_signature) = (signatures~load_ref().begin_parse(), signatures~load_ref().begin_parse());
-
-    signatures.end_parse();
-    
-    var (first_user_address_signature, first_user_address, second_user_address_signature, second_user_address) = (
-        first_user_addr_signature~load_bits(512), 
-        first_user_addr_signature~load_uint(256),
-        second_user_addr_signature~load_bits(512),
-        second_user_addr_signature~load_uint(256)
-    );
-
-    first_user_addr_signature.end_parse();
-    second_user_addr_signature.end_parse();
-
-    throw_unless(41, check_data_signature(begin_cell()
-        .store_uint(first_user_address, 256)
-        .end_cell().begin_parse(), first_user_address_signature, first_user_pubkey));
-    
-    throw_unless(42, check_data_signature(begin_cell()
-        .store_uint(second_user_address, 256)
-        .end_cell().begin_parse(), second_user_address_signature, second_user_pubkey));
-
-    accept_message();
-
-    ;; the assumption is that the first user deployed the contract and the participants agreed on commissions
-    ;; will fixed in future
-    ;; var first_user_balance = get_balance().first() - second_user_amount - 100000000; ;; 0.1GR for fee
-    ;; if (first_user_balance >= 0) {
-    ;;    first_user_amount = first_user_balance;
-    ;; }
-
-    make_payment(first_user_address, first_user_amount);
-    make_payment(second_user_address, second_user_amount);
-    return 0x47657426;
+    store_data(seqno, contract_status,
+        first_user_pubkey, second_user_pubkey,
+        0, depositSum, 0);
 }
 
 () recv_internal(int msg_value, cell in_msg_cell, slice in_msg) impure {
     var cs = in_msg_cell.begin_parse();
 
     var ds = get_data().begin_parse();
-    var (seqno, contract_status, _) = (ds~load_uint(32), ds~load_uint(32), ds~load_uint(32));
+    var (seqno, contract_status) = (ds~load_uint(32), ds~load_uint(4));
 
-    if (contract_status == 0x1ee564fc) {
+    if (contract_status < 0x4) {
         deposit(ds, in_msg, seqno, msg_value);
     }
 
@@ -183,21 +108,22 @@ int close_channel(signatures, first_user_pubkey, second_user_pubkey, first_user_
 }
 
 () recv_external(slice in_msg) impure {
-   var ds = get_data().begin_parse();
+    var ds = get_data().begin_parse();
     var (
         stored_seqno,
         contract_status,
+        first_user_pubkey,
+        second_user_pubkey,
         time_to_send, 
-        state_num,
-        first_user_state_ref,
-        second_user_state_ref
+        depositSum,
+        state_num
     ) = get_contract_state(ds);
 
-    if (contract_status == 0x00000000) {
+    if (contract_status == 0x0) {
         var seqno = in_msg~load_uint(32);
         throw_unless(33, seqno == stored_seqno);
         accept_message();
-        store_data(stored_seqno, 0x1ee564fc, time_to_send, state_num, first_user_state_ref, second_user_state_ref);
+        store_data(stored_seqno, 0x1, first_user_pubkey, second_user_pubkey, 0, 0, 0);
         return ();
     }
 
@@ -209,34 +135,50 @@ int close_channel(signatures, first_user_pubkey, second_user_pubkey, first_user_
     ;; protection from holding the transaction
     throw_unless(33, seqno == stored_seqno);
 
-    var (first_user_state, second_user_state) = (first_user_state_ref.begin_parse(), second_user_state_ref.begin_parse());
-
     ;; the user wants to get the deposit back when the second user has not yet made the deposit
-    if (contract_status == 0x1ee564fc) {
-        var (fs, ss) = get_money_back(in_msg, body_signature, first_user_state, second_user_state);
-        store_data(stored_seqno, contract_status, time_to_send, state_num, fs, ss);
+    if (contract_status <= 0x3) {
+        var msg_hash = slice_hash(in_msg);
+
+        var is_first_user = (check_signature(msg_hash, body_signature, first_user_pubkey)) & (contract_status == 0x2);
+        var is_second_user = (check_signature(msg_hash, body_signature, second_user_pubkey)) & (contract_status == 0x3);
+        throw_unless(35, is_first_user | is_second_user);
+        
+        var user_address_ref = in_msg~load_ref().begin_parse();
+
+        var user_address = user_address_ref~load_uint(256);
+
+        ;; will fixed in future
+        ;; var first_user_balance = get_balance().first() - 100000000; ;; 0.1GR for fee
+        ;; if (first_user_balance >= 0) {
+        ;;    depositSum = first_user_balance;
+        ;; }
+
+        user_address_ref.end_parse();
+
+        accept_message();
+
+        make_payment(user_address, depositSum); ;; assumption that smart contract has enough GR for fee
+        store_data(stored_seqno, 0x1, first_user_pubkey, second_user_pubkey, 0, 0, 0);
         return ();
     }
 
-    var (first_user_pubkey, second_user_pubkey) = (first_user_state~load_uint(256), second_user_state~load_uint(256));
-
     var msg_hash = slice_hash(in_msg);
     if (check_signature(msg_hash, body_signature, first_user_pubkey)) {
-        throw_unless(36, (contract_status != 0x47657424) | (123 >= time_to_send));
-        ifnot(contract_status == 0x1ee564fc) { contract_status = 0x47657424; } ;; first participant
+        throw_unless(36, (contract_status != 0x5) | (123 >= time_to_send));
+        contract_status = 0x5; ;; first participant
     } elseif (check_signature(msg_hash, body_signature, second_user_pubkey)) {
-        throw_unless(36, (contract_status != 0x47657425) | (123 >= time_to_send));
-        ifnot(contract_status == 0x1ee564fc) { contract_status = 0x47657425; } ;; second participant
+        throw_unless(36, (contract_status != 0x6) | (123 >= time_to_send));
+        contract_status = 0x6; ;; second participant
     } else {
         throw(35);
     }
 
     var final_state = cs~load_ref().begin_parse();
 
-    var contract_address = final_state~load_uint(256);
-    var my_addr = 36206311030299996349083233568547859740825703489576845723826167917779499779530;
+    var contract_address = 36206311030299996349083233568547859740825703489576845723826167917779499779530;
+    var (my_wc, my_addr) = (0, 36206311030299996349083233568547859740825703489576845723826167917779499779530);
 
-    ;; throw_unless(60, my_wc - 1);                   ;; contract should be on basechain
+    throw_unless(60, my_wc - 1);                   ;; contract should be on basechain
     throw_unless(60, my_addr == contract_address); ;; protect from previous states (last smart contracts)
 
     var new_state_num = final_state~load_uint(64);
@@ -252,59 +194,83 @@ int close_channel(signatures, first_user_pubkey, second_user_pubkey, first_user_
 
     throw_unless(37, check_signature(state_hash, first_user_signature, first_user_pubkey));
     throw_unless(38, check_signature(state_hash, second_user_signature, second_user_pubkey));
-     
-    var (first_user_deposit_amount, second_user_deposit_amount) = (first_user_state~load_grams(), second_user_state~load_grams());
 
     ;; total state amount should be equals to total deposit amount
-    throw_unless(39, first_user_deposit_amount + second_user_deposit_amount == first_user_amount + second_user_amount);
+    throw_unless(39, depositSum == first_user_amount + second_user_amount);
 
     ;; state should be >= current state
     throw_unless(40, new_state_num >= state_num);
 
-    if (new_state_num > state_num) {
-        var (fus, sus, tts) = prepare_new_states(first_user_pubkey, first_user_deposit_amount, second_user_pubkey, second_user_deposit_amount);
- 
-        first_user_state_ref = fus;
-        second_user_state_ref = sus;
-        time_to_send = tts;
+    if (new_state_num == state_num) {
+        var (first_user_addr_signature, second_user_addr_signature) = (signatures_ref~load_ref().begin_parse(), signatures_ref~load_ref().begin_parse());
 
-        state_num = new_state_num;
+        signatures_ref.end_parse();
+        
+        var (first_user_address_signature, first_user_address, second_user_address_signature, second_user_address) = (
+            first_user_addr_signature~load_bits(512), 
+            first_user_addr_signature~load_uint(256),
+            second_user_addr_signature~load_bits(512),
+            second_user_addr_signature~load_uint(256)
+        );
+
+        first_user_addr_signature.end_parse();
+        second_user_addr_signature.end_parse();
+
+        throw_unless(41, check_data_signature(begin_cell()
+            .store_uint(first_user_address, 256)
+            .end_cell().begin_parse(), first_user_address_signature, first_user_pubkey));
+        
+        throw_unless(42, check_data_signature(begin_cell()
+            .store_uint(second_user_address, 256)
+            .end_cell().begin_parse(), second_user_address_signature, second_user_pubkey));
 
         accept_message();
+
+        ;; the assumption is that the first user deployed the contract and the participants agreed on commissions
+        ;; will fixed in future
+        ;; var first_user_balance = get_balance().first() - second_user_amount - 100000000; ;; 0.1GR for fee
+        ;; if (first_user_balance >= 0) {
+        ;;    first_user_amount = first_user_balance;
+        ;; }
+
+        make_payment(first_user_address, first_user_amount);
+        make_payment(second_user_address, second_user_amount);
+        contract_status = 0x7;
     } else {
-        contract_status = close_channel(signatures_ref, first_user_pubkey, second_user_pubkey, first_user_amount, second_user_amount);
+        state_num = new_state_num;
+        time_to_send = 123 + 86401;
+        accept_message();
     }
     
-    store_data(seqno, contract_status, time_to_send, state_num, first_user_state_ref, second_user_state_ref);
+    store_data(seqno, contract_status, first_user_pubkey, second_user_pubkey, time_to_send, depositSum, state_num);
 }
 
-(int, int) stacked_sums() method_id {
-     var ds = get_data().begin_parse();
-     var (first_user_state, second_user_state) = (ds~load_ref().begin_parse(), ds~load_ref().begin_parse());
-     var first_user_grams = first_user_state.skip_bits(256);
-     var second_user_grams = second_user_state.skip_bits(256);
-     return (first_user_grams~load_grams(), second_user_grams~load_grams());
+int stacked_sum() method_id {
+     var ds = get_data().begin_parse().skip_bits(32 + 4 + 256 + 256 + 32);
+     return ds~load_grams();
 }
 
 (int, int) participants() method_id {
-     var ds = get_data().begin_parse();
-     var (first_user_state, second_user_state) = (ds~load_ref().begin_parse(), ds~load_ref().begin_parse());
-     return (first_user_state.preload_uint(256), second_user_state.preload_uint(256));
+     var ds = get_data().begin_parse().skip_bits(32);
+     var first_user_pubkey = ds~load_uint(256);
+     var second_user_pubkey = ds~load_uint(256);
+     return (first_user_pubkey, second_user_pubkey);
 }
 
 int state_num() method_id {
-     var ds = get_data().begin_parse();
-     return ds.skip_bits(96).preload_uint(64);
+     var ds = get_data().begin_parse().skip_bits(32 + 4 + 256 + 256 + 32);
+     ds~load_grams(); ;; skip grams
+     return ds.preload_uint(64);
 }
 
 int time_to_send() method_id {
-     var ds = get_data().begin_parse();
-     return ds.skip_bits(64).preload_uint(32);
+     var ds = get_data().begin_parse().skip_bits(32 + 4 + 256 + 256);
+     return ds.preload_uint(32);
 }
 
 int contract_status() method_id {
-     var ds = get_data().begin_parse();
-     return ds.skip_bits(32).preload_uint(32);
+     var ds = get_data().begin_parse().skip_bits(32);
+     return ds.preload_uint(4);
 }
 
 int seqno() method_id {
